@@ -10,7 +10,7 @@ class AmoApi
         'USER_LOGIN',
         'USER_HASH'
     ];
-    public $_subdomain;
+    private $_subdomain;
 
     public function authorization(string $login, string $hash) : bool {
         $this->_user['USER_LOGIN'] = $login;
@@ -22,7 +22,7 @@ class AmoApi
         return $response['auth'];
     }
 
-    public function curl_send($link, $post_fields) {
+    private function curl_send(string $link, array $post_fields) : array {
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-API-client/1.0');
@@ -49,7 +49,7 @@ class AmoApi
         return json_decode($out,true);
     }
 
-    public function add(string $entity_name, $data) {
+    public function add(string $entity_name, array $data) {
 
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity_name;
 //        $leads['add'] = [

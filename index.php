@@ -20,7 +20,7 @@ $amoApi = new AmoApi();
 $response = $amoApi->authorization($login, $hash);
 dump($response);
 
-$leads['add'] = [
+//$leads['add'] = [
 //    [
 //        'name' => 'Сделка по карандашам',
 //        'created_at' => 1298904164,
@@ -83,28 +83,74 @@ $leads['add'] = [
 //            ]
 //        ]
 //    ],
-    [
-        'name' => 'Бумага',
-        'created_at' => 1298904164,
-        'status_id' => 7087609,
-        'sale' => 600200,
-        'responsible_user_id' => 215309,
-        'custom_fields' => [
-            [
-                #Нестандартное дополнительное поле типа "мультисписок", которое мы создали
-                'id' => 426106,
-                'values' => [
-                    1237756,
-                    1237758
-                ]
-            ]
-        ]
-    ]
-];
+//    [
+//        'name' => 'Бумага',
+//        'created_at' => 1298904164,
+//        'status_id' => 7087609,
+//        'sale' => 600200,
+//        'responsible_user_id' => 215309,
+//        'custom_fields' => [
+//            [
+//                #Нестандартное дополнительное поле типа "мультисписок", которое мы создали
+//                'id' => 426106,
+//                'values' => [
+//                    1237756,
+//                    1237758
+//                ]
+//            ]
+//        ]
+//    ]
+//];
+$companies['add']=array(
+    array(
+        'name' => 'АО Компания',
+        'responsible_user_id' => 504141,
+        'created_by' => 504141,
+        'created_at' => "1509051600",
+        'tags' => "недвижимость,застройка,аренда",
+        'leads_id' => array(
+            "45615",
+            "43510"
+        ),
+        'custom_fields' => array(
+            array(
+                'id' => 4396818,
+                'values' => array(
+                    array(
+                        'value' => "89993456872",
+                        'enum' => "WORK"
+                    ),
+                    array(
+                        'value' => "89998495162",
+                        'enum' => "MOB"
+                    )
+                )
+            ),
+            array(
+                'id' => 4396819,
+                'values' => array(
+                    array(
+                        'value' => "company@company.moc",
+                        'enum' => "WORK"
+                    )
+                )
+            ),
+            array(
+                'id' => 4400115,
+                'values' => array(
+                    array(
+                        'value' => "ул. Октябрьская, д. 2",
+                        'subtype' => "address_line_1"
+                    ),
+                )
+            )
+        )
+    )
+);
+//
+//$subdomain='mfilippov'; #Наш аккаунт - поддомен
+///* Формируем ссылку для запроса */
+//$link='https://'.$subdomain.'.amocrm.ru/api/v2/companies';
 
-$subdomain='mfilippov'; #Наш аккаунт - поддомен
-/* Формируем ссылку для запроса */
-$link='https://'.$subdomain.'.amocrm.ru/api/v2/leads';
-
-$amoApi->curl_send($link, $leads);
+$amoApi->add('companies', $companies);
 
