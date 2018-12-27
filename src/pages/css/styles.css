@@ -1,0 +1,31 @@
+.container {
+    margin-top: 50px;
+    margin-left: 40px;
+    position: absolute;
+}
+.container_input {
+    display: block;
+}
+.input {
+    border-collapse: collapse;
+    color: rgb(0, 0, 0);
+    display: inline-table;
+    font-size: 12.8px;
+    font-weight: 800;
+    line-height: 20px;
+    margin-right: 10px;
+    text-align: left;
+    width: 450px;
+}
+.submit {
+    background-color: #8bb0ff;
+    margin-top: 10px;
+    height: auto;
+    width: auto;
+    font-size: medium;
+}
+#error_text {
+    display: none;
+    color: red;
+    margin-bottom: 10px;
+}
