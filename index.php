@@ -103,7 +103,7 @@ dump($response);
 //];
 $companies['add']=array(
     array(
-        'name' => 'АО Компания',
+        'name' => 'Покупатель',
         'responsible_user_id' => 504141,
         'created_by' => 504141,
         'created_at' => "1509051600",
@@ -112,6 +112,52 @@ $companies['add']=array(
             "45615",
             "43510"
         ),
+        'next_date' => "1508878800",
+        'custom_fields' => array(
+            array(
+                'id' => 4396818,
+                'values' => array(
+                    array(
+                        'value' => "89993456872",
+                        'enum' => "WORK"
+                    ),
+                    array(
+                        'value' => "89998495162",
+                        'enum' => "MOB"
+                    )
+                )
+            ),
+            array(
+                'id' => 4396819,
+                'values' => array(
+                    array(
+                        'value' => "company@company.moc",
+                        'enum' => "WORK"
+                    )
+                )
+            ),
+            array(
+                'id' => 4400115,
+                'values' => array(
+                    array(
+                        'value' => "ул. Октябрьская, д. 2",
+                        'subtype' => "address_line_1"
+                    ),
+                )
+            )
+        )
+    ),
+    array(
+        'name' => 'Второй Покупатель',
+        'responsible_user_id' => 504141,
+        'created_by' => 504141,
+        'created_at' => "1509051600",
+        'tags' => "недвижимость,застройка,аренда",
+        'leads_id' => array(
+            "45615",
+            "43510"
+        ),
+        'next_date' => "1508878800",
         'custom_fields' => array(
             array(
                 'id' => 4396818,
@@ -147,10 +193,6 @@ $companies['add']=array(
         )
     )
 );
-//
-//$subdomain='mfilippov'; #Наш аккаунт - поддомен
-///* Формируем ссылку для запроса */
-//$link='https://'.$subdomain.'.amocrm.ru/api/v2/companies';
 
-$amoApi->add('companies', $companies);
+dump($amoApi->add('customers', $companies));
 

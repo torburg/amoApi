@@ -132,7 +132,7 @@ class AmoApi
 //                ]
 //            ]
 //        ];
-        $this->curl_send($link, $data);
+        return $this->curl_send($link, $data);
 
     }
 
