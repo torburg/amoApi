@@ -12,8 +12,9 @@ class AmoApi
     ];
     private $_subdomain;
 
-    public function add(string $entity_name, array $data) {
+    public function add(string $entity_name, array $data) : array {
 
+        $data_to_send['add'] = $data;
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity_name;
 //        $leads['add'] = [
 //            ['name' => 'Сделка по карандашам',
@@ -95,8 +96,7 @@ class AmoApi
 //                ]
 //            ]
 //        ];
-        return $this->curl_send($link, $data);
-
+        return $this->curl_send($link, $data_to_send);
     }
 
     public function authorization(string $login, string $hash) : bool {
@@ -109,32 +109,52 @@ class AmoApi
         return $response['auth'];
     }
 
-    public function collect (string $entity_name, int $n, array $fields_to_add) : array {
+    public function collect(string $entity_name, int $amount, array $existing_entities = []) : array {
         $result = [];
-        for ($i = 0; $i < $n; $i++) {
+        for ($i = 0; $i < $amount; $i++) {
+            $entity = [];
             $entity['name'] = "$entity_name " . rand(0, 10000);
             if ($entity_name == "customers") {
                 $entity['next_date'] = strtotime('22-09-2019');
             }
-            if ($fields_to_add['contacts']) {
-                $entity['contacts_id'] = $fields_to_add['contacts'][$i];
+            if ($entity_name == "fields") {
+                $entity['origin'] = generate_random_string();
+                $entity['field_type'] = 5; //type of field - MULTISELECT
+                $entity ['element_type'] = 1; //for contacts
+                $entity ['enums'] = [
+                    "чёрный",
+                    "белый",
+                    "красный",
+                    "оранжевый",
+                    "голубой",
+                    "фиолетовый",
+                    "прозрачный",
+                    "жёлтый",
+                    "синий",
+                    "зелёный"
+                ];
             }
-            if ($fields_to_add['companies']) {
-                $entity['company_id'] = $fields_to_add['companies'][$i];
+            if (array_key_exists('contacts', $existing_entities) &&  $existing_entities['contacts']) {
+                $entity['contacts_id'] = $existing_entities['contacts'][$i];
             }
-            $result['add'][] = $entity;
+            if (array_key_exists('companies', $existing_entities) && $existing_entities['companies']) {
+                $entity['company_id'] = $existing_entities['companies'][$i];
+            }
+            $result[] = $entity;
         }
         return $result;
     }
 
-    private function curl_send(string $link, array $post_fields) : array {
+    private function curl_send(string $link, array $post_fields = []) : array {
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-API-client/1.0');
         curl_setopt($curl,CURLOPT_URL, $link);
-        curl_setopt($curl,CURLOPT_CUSTOMREQUEST,'POST');
-        curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($post_fields));
-        curl_setopt($curl,CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        if ($post_fields) {
+            curl_setopt($curl,CURLOPT_CUSTOMREQUEST,'POST');
+            curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($post_fields));
+            curl_setopt($curl,CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        }
         curl_setopt($curl,CURLOPT_HEADER,false);
         curl_setopt($curl,CURLOPT_COOKIEFILE,$_SERVER['DOCUMENT_ROOT'] . '/cookie.txt'); #PHP>5.3.6 dirname(__FILE__) -> __DIR__
         curl_setopt($curl,CURLOPT_COOKIEJAR,$_SERVER['DOCUMENT_ROOT'] . '/cookie.txt'); #PHP>5.3.6 dirname(__FILE__) -> __DIR__
@@ -154,6 +174,15 @@ class AmoApi
         return json_decode($out,true);
     }
 
+    public function get(string $entity, array $params = []) : array {
+        $params = implode(',', $params);
+        $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity;
+        if ($params) {
+            $link .= '/?with=' . $params;
+        }
+        return $this->curl_send($link);
+    }
+
     public function response_processing(array $response) : array {
         $result = [];
         foreach ($response as $item) {
@@ -162,8 +191,10 @@ class AmoApi
         return $result;
     }
 
-
-
-
+    public function update(string $entity_name, array $data) {
+        $data_to_send['update'] = $data;
+        $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity_name;
+        return $this->curl_send($link, $data_to_send);
+    }
 
 }
