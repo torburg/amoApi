@@ -22,7 +22,7 @@ $contacts = $amoApi->collect('contact', 1);
 //];
 //
 $entity_id = 1823663;
-$entity_code = 2;
+$entity_code = 1;
 $note_type = 4;
 $note_text = 'text in note';
 
@@ -44,8 +44,7 @@ $entities = [
 ];
 $entity = $entities[$entity_code];
 $params = 'id=' . $entity_id;
-dump($amoApi->get($entity, $params));
-die;
+$amoApi->get($entity, $params);
 dump($amoApi->add('notes', $note));
 
 

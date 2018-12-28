@@ -164,11 +164,11 @@ class AmoApi
         curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
         $out = curl_exec($curl);
         try {
-            if (!is_array($out)) {
+            if (!$out) {
                 throw new Exception('Неверный запрос к базе данных');
             }
         } catch (Exception $E) {
-            die('Ошибка: ' . $E->getMessage() . PHP_EOL . 'Код ошибки: ' . $E->getCode());
+            die('Ошибка. ' . $E->getMessage());
         }
         $code = curl_getinfo($curl,CURLINFO_HTTP_CODE);
         curl_close($curl);
@@ -188,7 +188,6 @@ class AmoApi
         if ($params) {
             $link .= '/?' . $params;
         }
-        dump($link);
         return $this->curl_send($link);
     }
 

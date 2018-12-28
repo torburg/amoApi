@@ -41,6 +41,5 @@ if ($_POST) {
     $entity = $entities[$entity_code];
     $params = 'id=' . $entity_id;
     $amoApi->get($entity, $params);
-    die;
-    dump($amoApi->add('notes', $note));
+    $amoApi->add('notes', $note);
 }
