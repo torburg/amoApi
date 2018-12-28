@@ -29,6 +29,8 @@ $(document).ready(function(){
                 url: '/src/php/add_entities.php',
                 data: $(this).serialize(),
                 success: function (response) {
+                    var note = 'Добавлено ' + quantity + ' сущностей.';
+                    setTimeout(function(){ alert(note); }, 3000);
                     // document.location.href='/src/pages/add_entities.html';
                 },
                 error: function (response) {
