@@ -1,6 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/src/api/AmoApi.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/src/helpers.php');
+include($_SERVER['DOCUMENT_ROOT'] . "/header.php");
 
 use Amo\Api\AmoApi;
 
@@ -12,54 +11,42 @@ $amoApi->authorization($login, $hash);
 
 $contacts = $amoApi->collect('contact', 1);
 
+//dump($amoApi->get('contacts')); die;
+
 //dump($old_fields);
+//$entities = [
+//    'contacts' => [],
+//    'companies' => [],
+//    'leads' => [],
+//    'customers' => []
+//];
+//
+$entity_id = 1823663;
+$entity_code = 2;
+$note_type = 4;
+$note_text = 'text in note';
+
+$note = [
+    [
+        'element_id' => $entity_id,
+        'element_type' => $entity_code,
+        'note_type' => $note_type,
+        'text' => $note_text
+    ]
+];
+//$params = ;
 $entities = [
-    'contacts' => [],
-    'companies' => [],
-    'leads' => [],
-    'customers' => []
+    1 	=> 'contacts',
+    2 	=> 'leads',
+    3 	=> 'companies',
+    4 	=> 'tasks',
+    12 	=> 'customers',
 ];
+$entity = $entities[$entity_code];
+$params = 'id=' . $entity_id;
+dump($amoApi->get($entity, $params));
+die;
+dump($amoApi->add('notes', $note));
 
-$fields = $amoApi->collect('fields', 1);
-$request = $amoApi->add('fields', $fields);
-//dump($request);
 
-//$field_id = $request['_embedded']['items'][0]['id'];
 
-$colors = [
-    "чёрный",
-    "белый",
-    "красный",
-    "оранжевый",
-    "голубой",
-    "фиолетовый",
-    "прозрачный",
-    "жёлтый",
-    "синий",
-    "зелёный"
-];
-dump($response = $amoApi->get('contacts'));
-$response = $response['_embedded']['items'];
-$field_id = 90329;
-
-$contacts  = [];
-foreach ($response as $item) {
-    $contact = [];
-    $contact['id'] = $item['id'];
-    $contact['updated_at'] = time();
-    $contact['custom_fields'] = [
-        [
-            'id' => $field_id,
-            'name' => 'field_name',
-            'values' => [
-                $colors[array_rand($colors)],
-                $colors[array_rand($colors)]
-            ]
-        ]
-    ];
-    $contacts[] = $contact;
-}
-
-dump($contacts);
-$response = $amoApi->update('contacts', $contacts);
-dump($response);

@@ -66,7 +66,7 @@ if ($_GET) {
         "синий",
         "зелёный"
     ];
-    
+
     $response = $amoApi->get('contacts');
     $response = $response['_embedded']['items'];
     $contacts = [];
