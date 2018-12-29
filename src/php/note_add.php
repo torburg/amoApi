@@ -14,23 +14,8 @@ if ($_POST) {
 
     $entity_id = $_POST['entity_id'];
     $entity_code = $_POST['entity_code'];
-    $note_type = $_POST['note_type'];
     $note_text = $_POST['note_text'];
 
-    $entity_id = 1823663;
-    $entity_code = 2;
-    $note_type = 4;
-    $note_text = 'text in note';
-
-    $note = [
-        [
-            'element_id' => $entity_id,
-            'element_type' => $entity_code,
-            'note_type' => $note_type,
-            'text' => $note_text
-        ]
-    ];
-//$params = ;
     $entities = [
         1 	=> 'contacts',
         2 	=> 'leads',
@@ -39,7 +24,16 @@ if ($_POST) {
         12 	=> 'customers',
     ];
     $entity = $entities[$entity_code];
+
+    $note = [
+        [
+            'element_id' => $entity_id,
+            'element_type' => $entity_code,
+            'text' => $note_text
+        ]
+    ];
     $params = 'id=' . $entity_id;
     $amoApi->get($entity, $params);
     $amoApi->add('notes', $note);
+    echo "Ваше примечание добавлено";
 }

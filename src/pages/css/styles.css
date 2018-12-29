@@ -1,35 +1,45 @@
 p {
     font-size: 15px;
+    display: inline;
+    margin-right: 20px;
+}
+#call_form {
+    display: none;
 }
 .container {
-margin-top: 50px;
-margin-left: 40px;
-position: absolute;
+    margin-top: 50px;
+    margin-left: 40px;
+    position: absolute;
 }
 .container_input {
-display: block;
+    display: block;
 }
 .input {
-border-collapse: collapse;
-color: rgb(0, 0, 0);
-display: block;
-font-size: 12.8px;
-font-weight: 800;
-line-height: 20px;
-margin-right: 10px;
-margin-top: 20px;
-text-align: left;
-width: 450px;
+    border-collapse: collapse;
+    color: rgb(0, 0, 0);
+    display: block;
+    font-size: 12.8px;
+    font-weight: 800;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 450px;
+}
+.input_phone {
+    margin-top: 20px;
+    width: 450px;
 }
 .submit {
-background-color: #8bb0ff;
-margin-top: 20px;
-height: auto;
-width: auto;
-font-size: medium;
+    background-color: #8bb0ff;
+    margin-top: 20px;
+    height: auto;
+    width: auto;
+    font-size: medium;
 }
 #error_text {
-display: none;
-color: red;
-margin-bottom: 10px;
+    display: none;
+    color: red;
+    margin-bottom: 10px;
 }
