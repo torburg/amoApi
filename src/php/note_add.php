@@ -2,6 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT'] . "/header.php");
 
 use \Amo\Api\AmoApi;
+#@ToDo stay on these page if response error
 
 if ($_POST) {
 
@@ -33,6 +34,8 @@ if ($_POST) {
         ]
     ];
     $params = 'id=' . $entity_id;
+
+    #@ToDo resolve get amount problem (500 for one request)
     $amoApi->get($entity, $params);
     $amoApi->add('notes', $note);
     echo "Ваше примечание добавлено";

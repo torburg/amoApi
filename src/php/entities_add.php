@@ -3,10 +3,10 @@ include($_SERVER['DOCUMENT_ROOT'] . "/header.php");
 use \Amo\Api\AmoApi;
 //проверка авторизации?..
 
-if ($_GET) {
-    if ($_GET['count'] >= 0 && $_GET['count'] <= 10000) {
+if ($_POST) {
+    if ($_POST['count'] >= 0 && $_POST['count'] <= 10000) {
 
-        $count = $_GET['count'];
+        $count = $_POST['count'];
 
         $login = 'mfilippov@team.amocrm.com';
         $hash = '46dc105cf215a952995d55378d858bedf78fd024';
@@ -66,7 +66,7 @@ if ($_GET) {
         "синий",
         "зелёный"
     ];
-
+    #@TODo need to get all contacts (1 response return max 500 contacts)
     $response = $amoApi->get('contacts');
     $response = $response['_embedded']['items'];
     $contacts = [];

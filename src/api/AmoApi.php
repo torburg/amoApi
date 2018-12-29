@@ -12,6 +12,11 @@ class AmoApi
     ];
     private $_subdomain;
 
+    /**
+     * @param string $entity_name
+     * @param array $data
+     * @return array
+     */
     public function add(string $entity_name, array $data) : array {
 
         $data_to_send['add'] = $data;
@@ -99,8 +104,16 @@ class AmoApi
         return $this->curl_send($link, $data_to_send);
     }
 
+    /***
+     * @param string $login
+     * @param string $hash
+     * @return bool
+     */
     public function authorization(string $login, string $hash) : bool {
-        $this->_user['USER_LOGIN'] = $login;
+//        try {
+//
+//            $this->_user['USER_LOGIN'] = $login;
+//        }
         $this->_user['USER_HASH'] = $hash;
         $this->_subdomain = explode("@", $login)[0];
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/private/api/auth.php?type=json';
@@ -109,15 +122,21 @@ class AmoApi
         return $response['auth'];
     }
 
+    /**
+     * @param string $entity_name
+     * @param int $amount
+     * @param array $existing_entities
+     * @return array
+     */
     public function collect(string $entity_name, int $amount, array $existing_entities = []) : array {
         $result = [];
         for ($i = 0; $i < $amount; $i++) {
             $entity = [];
             $entity['name'] = "$entity_name " . rand(0, 10000);
-            if ($entity_name == "customers") {
+            if ($entity_name === "customers") {
                 $entity['next_date'] = strtotime('22-09-2019');
             }
-            if ($entity_name == "fields") {
+            if ($entity_name === "fields") {
                 $entity['origin'] = generate_random_string();
                 $entity['field_type'] = 5; //type of field - MULTISELECT
                 $entity ['element_type'] = 1; //for contacts
@@ -145,16 +164,23 @@ class AmoApi
         return $result;
     }
 
-    private function curl_send(string $link, array $post_fields = []) : array {
+    /**
+     * @param string $link
+     * @param array $params
+     * @return array
+     */
+    private function curl_send(string $link, array $params = []) : array {
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-API-client/1.0');
         curl_setopt($curl,CURLOPT_URL, $link);
 
-        if ($post_fields) {
+        if ($params) {
             curl_setopt($curl,CURLOPT_CUSTOMREQUEST,'POST');
-            curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($post_fields));
+            curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($params));
             curl_setopt($curl,CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        } else {
+            curl_setopt($curl,CURLOPT_CUSTOMREQUEST, 'GET');
         }
 
         curl_setopt($curl,CURLOPT_HEADER,false);
@@ -183,6 +209,11 @@ class AmoApi
         return json_decode($out,true);
     }
 
+    /**
+     * @param string $entity
+     * @param string $params
+     * @return array
+     */
     public function get(string $entity, string $params = "") : array {
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity;
         if ($params) {
@@ -191,6 +222,10 @@ class AmoApi
         return $this->curl_send($link);
     }
 
+    /**
+     * @param array $response
+     * @return array
+     */
     public function response_processing(array $response) : array {
         $result = [];
         foreach ($response as $item) {
@@ -199,6 +234,11 @@ class AmoApi
         return $result;
     }
 
+    /**
+     * @param string $entity_name
+     * @param array $data
+     * @return array
+     */
     public function update(string $entity_name, array $data) {
         $data_to_send['update'] = $data;
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity_name;
