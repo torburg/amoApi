@@ -3,7 +3,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/header.php');
 
 use Amo\Api\AmoApi;
 
-if ($_POST) {
+if ($_POST['login'] && $_POST['password']) {
     $amoApi = new AmoApi();
     $authorized = $amoApi->authorization($_POST['login'], $_POST['password']);
     if ($authorized) {

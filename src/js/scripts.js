@@ -44,16 +44,20 @@ $(document).ready(function(){
         if (isNaN(quantity) || quantity <= 0 || quantity > 10000) {
             $("#error_text").empty().append("Введите верное количество").css("display", "block");
         } else {
+            $("#loading").show();
+            $("#submit").hide();
             $.ajax({
                 url: '/src/php/entities_add.php',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
+                    $("#loading").hide();
                     var note = quantity + ' сущностей каждого типа добавлено';
                     alert(note);
                     document.location.href='/src/pages/event_add.html';
                 },
                 error: function (response) {
+                    $("#loading").hide();
                     alert("Ошибка сервера " + response.status);
                 }
             })

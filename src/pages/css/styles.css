@@ -31,6 +31,9 @@ p {
     margin-top: 20px;
     width: 450px;
 }
+#loading {
+    display: none;
+}
 .submit {
     background-color: #8bb0ff;
     margin-top: 20px;

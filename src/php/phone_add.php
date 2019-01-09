@@ -6,7 +6,7 @@ if ($_POST) {
 
     $amoApi = new AmoApi();
     $login = 'mfilippov@team.amocrm.com';
-    $hash = '46dc105cf215a952995d55378d858bedf78fd024';
+    $hash = '4f2e1172393444687df0487b3d5c10286f8e00ee';
 
     $amoApi = new AmoApi();
     $amoApi->authorization($login, $hash);

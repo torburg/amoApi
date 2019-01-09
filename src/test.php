@@ -4,14 +4,44 @@ include($_SERVER['DOCUMENT_ROOT'] . "/header.php");
 use Amo\Api\AmoApi;
 
 $login = 'mfilippov@team.amocrm.com';
-$hash = '4f2e1172393444687df0487b3d5c10286f8e00ee';
-
+$hash = '2e39d1a98868c0f5dba770757150480a1c936685';
+//
 $amoApi = new AmoApi();
-//dump($amoApi->authorization($login, $hash));
+dump($amoApi->authorization($login, $hash));
 
-$contact177_id = 1823636;
+    $fields = $amoApi->collect('fields', 1);
+    $request = $amoApi->add('fields', $fields);
+    $field_id = $request['_embedded']['items'][0]['id'];
 
-$login = "";
-$password = "";
-
-$amoApi->authorization($login, $password);
+    $colors = [
+        "чёрный",
+        "белый",
+        "красный",
+        "оранжевый",
+        "голубой",
+        "фиолетовый",
+        "прозрачный",
+        "жёлтый",
+        "синий",
+        "зелёный"
+    ];
+#@TODo need to get all contacts (1 request return max 500 contacts)
+    $response = $amoApi->get('contacts');
+    $response = $response['_embedded']['items'];
+    $contacts = [];
+    foreach ($response as $item) {
+        $contact = [];
+        $contact['id'] = $item['id'];
+        $contact['updated_at'] = time();
+        $contact['custom_fields'] = [
+            [
+                'id' => $field_id,
+                'values' => [
+                    $colors[array_rand($colors)],
+                    $colors[array_rand($colors)]
+                ]
+            ]
+        ];
+        $contacts[] = $contact;
+    }
+    $response = $amoApi->update('contacts', $contacts);

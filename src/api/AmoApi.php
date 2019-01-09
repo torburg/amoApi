@@ -114,8 +114,9 @@ class AmoApi
 //
 //            $this->_user['USER_LOGIN'] = $login;
 //        }
+        $this->_user['USER_LOGIN'] = $login;
         $this->_user['USER_HASH'] = $hash;
-        $this->_subdomain = explode("@", $login)[0];
+        $this->_subdomain = 'testac'; //explode("@", $login)[0];
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/private/api/auth.php?type=json';
         $response = $this->curl_send($link, $this->_user);
         $response = $response['response'];
@@ -125,6 +126,7 @@ class AmoApi
     /**
      * @param string $entity_name
      * @param int $amount
+     * @param int $offset
      * @param array $existing_entities
      * @return array
      */
@@ -153,11 +155,19 @@ class AmoApi
                     "зелёный"
                 ];
             }
-            if (array_key_exists('contacts', $existing_entities) &&  $existing_entities['contacts']) {
-                $entity['contacts_id'] = $existing_entities['contacts'][$i];
+            if (array_key_exists('contacts', $existing_entities) &&
+                $existing_entities['contacts'] &&
+                $entity_name !== 'contact') {
+                if (array_key_exists($i , $existing_entities['contacts'])) {
+                    $entity['contacts_id'] = $existing_entities['contacts'][$i];
+                }
             }
-            if (array_key_exists('companies', $existing_entities) && $existing_entities['companies']) {
-                $entity['company_id'] = $existing_entities['companies'][$i];
+            if (array_key_exists('companies', $existing_entities) &&
+                $existing_entities['companies'] &&
+                $entity_name !== 'company') {
+                if (array_key_exists($i, $existing_entities['companies'])) {
+                    $entity['company_id'] = $existing_entities['companies'][$i];
+                }
             }
             $result[] = $entity;
         }
@@ -175,11 +185,12 @@ class AmoApi
         curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-API-client/1.0');
         curl_setopt($curl,CURLOPT_URL, $link);
 
-        if ($params) {
+        if ($params['method'] === 'POST') {
             curl_setopt($curl,CURLOPT_CUSTOMREQUEST,'POST');
             curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($params));
             curl_setopt($curl,CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        } else {
+        }
+        if ($params['method'] === 'GET') {
             curl_setopt($curl,CURLOPT_CUSTOMREQUEST, 'GET');
         }
 
@@ -214,10 +225,10 @@ class AmoApi
      * @param string $params
      * @return array
      */
-    public function get(string $entity, string $params = "") : array {
+    public function get(string $entity, array $params = []) : array {
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity;
-        if ($params) {
-            $link .= '/?' . $params;
+        if ($params['offset']) {
+            $link .= '/?' . $params['offset'];
         }
         return $this->curl_send($link);
     }
