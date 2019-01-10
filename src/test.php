@@ -8,95 +8,73 @@ $hash = '2e39d1a98868c0f5dba770757150480a1c936685';
 //
 $amoApi = new AmoApi();
 dump($amoApi->authorization($login, $hash));
+
+//$entity_id = 10226117;
+//$entity_code = 3;
+//$complete_till_at = "2019-01-11";
+//$responsible_user_id = 3009898;
+//$task_text = "test text";
+//
 //$entities = [
-//    'contacts' => [],
-//    'companies' => [],
-//    'leads' => [],
-//    'customers' => []
+//    1 	=> 'contacts',
+//    2 	=> 'leads',
+//    3 	=> 'companies',
+//    4 	=> 'tasks',
+//    12 	=> 'customers',
 //];
-//$to_add = 325;
-//$i = 0;
-//while ($i < $to_add) {
-//    //250 - recommended entities amount to add with one request
-//    $adding_quantity = 0;
-//    if ($to_add - $i >= 250) {
-//        $adding_quantity = 250;
-//    } else {
-//        $adding_quantity = $to_add - $i;
-//    }
+//$entity = $entities[$entity_code];
 //
-//    $contacts = $amoApi->collect('contact', $adding_quantity, $entities);
-//    $response = $amoApi->add('contacts', $contacts);
-//    $response = $response["_embedded"]['items'];
-//    $entities['contacts'] = $amoApi->response_processing($response);
+//$params = 'id=' . $entity_id;
+//$response = $amoApi->get($entity, $params);
+//dump($response);
 //
-//    $companies = $amoApi->collect('company', $adding_quantity, $entities);
-//    $response = $amoApi->add('companies', $companies);
-//    $response = $response["_embedded"]['items'];
-//    $entities['companies'] = $amoApi->response_processing($response);
+//if (array_key_exists("_embedded", $response)) {
 //
-//    //customers and leads don't connect -> response_processing doesn't required
-//    $customers = $amoApi->collect('customers', $adding_quantity, $entities);
-//    $response = $amoApi->add('customers', $customers);
-//
-//    $leads = $amoApi->collect('leads', $adding_quantity, $entities);
-//    $amoApi->add('leads', $leads);
-//    $i += $adding_quantity;
-//};
-//die;
+//    echo "Ваше примечание добавлено";
+//} else {
+//    echo "ID сущности и её тип не совпадают";
+//}
 
-$colors = [
-    "чёрный",
-    "белый",
-    "красный",
-    "оранжевый",
-    "голубой",
-    "фиолетовый",
-    "прозрачный",
-    "жёлтый",
-    "синий",
-    "зелёный"
+$entity_id = 10286817;
+$entity_code = 3;
+$field_text = "test tests";
+
+$entities = [
+    1 	=> 'contacts',
+    2 	=> 'leads',
+    3 	=> 'companies',
+    4 	=> 'tasks',
+    12 	=> 'customers',
 ];
+$entity = $entities[$entity_code];
 
-//add one field and get it's id
-$fields = $amoApi->collect('fields', 1);
-$request = $amoApi->add('fields', $fields);
-$field_id = $request['_embedded']['items'][0]['id'];
-
-//get all contacts and update them
-$rows = 250;//250 - recommended entities amount to add with one request
-$offset = 0;
-$params = "limit_rows=" . $rows . "&limit_offset=" . $offset;
-
-$contacts = [];
-while (TRUE) {
-    $get_response = [];
-    $get_response = $amoApi->get('contacts', $params);
-    if (array_key_exists("_embedded", $get_response)) {
-        $get_response = $get_response["_embedded"]["items"];
-
-        foreach ($get_response as $item) {
-            $contact = [];
-            $contact['id'] = $item['id'];
-            $contact['updated_at'] = time();
-            $contact['custom_fields'] = [
-                [
-                    'id' => $field_id,
-                    'values' => [
-                        $colors[array_rand($colors)],
-                        $colors[array_rand($colors)]
-                    ]
-                ]
-            ];
-            $contacts[] = $contact;
-        }
-        $offset += $rows;
-        $params = "limit_rows=" . $rows . "&limit_offset=" . $offset;
-    } else {
+//$params = "id=" . $entity_id;
+$params = "with=custom_fields";
+$response = $amoApi->get("account", $params);
+dump($response); die;
+$custom_fields = $response["_embedded"]['custom_fields'][$entity];
+$field_id = -1;
+foreach ($custom_fields as $custom_field) {
+    if ($custom_field['field_type'] == 1) {
+        $field_id = $custom_field['id'];
         break;
     }
 }
-$contacts_to_update = array_chunk($contacts, $rows);
-foreach ($contacts_to_update as $contacts) {
-    $amoApi->update('contacts', $contacts);
+if ($field_id < 0) {
+    echo "У данной сущности нет текстового поля";
 }
+$entity_to_update = [];
+$entity_to_update['id'] = $entity_id;
+$entity_to_update['updated_at'] = time();
+$entity_to_update['custom_fields'] = [
+    [
+        'id' => $field_id,
+        'values' => [
+            [
+                'value' => $field_text
+            ]
+        ]
+    ]
+];
+
+dump($amoApi->update($entity, [$entity_to_update]));

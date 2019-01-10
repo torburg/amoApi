@@ -97,9 +97,9 @@ if ($_POST['count'] >= 0 && $_POST['count'] <= 10000) {
             break;
         }
     }
-    $contacts_to_update = array_chunk($contacts, $rows);
-    foreach ($contacts_to_update as $contacts) {
-        $amoApi->update('contacts', $contacts);
+    $contacts_to_update = array_chunk($contacts, LIMIT);
+    foreach ($contacts_to_update as $contacts_part) {
+        $amoApi->update('contacts', $contacts_part);
     }
 }
 

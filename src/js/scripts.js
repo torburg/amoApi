@@ -3,7 +3,6 @@ $(document).ready(function(){
     $("#note_type").change(function(){
         $("#error_text").empty();
         var selected = $(this).val();
-        console.log(selected);
         if (selected === '4') {
             $('#call_form').hide();
             $('#note_form').show();
@@ -54,10 +53,60 @@ $(document).ready(function(){
                     $("#loading").hide();
                     var note = quantity + ' сущностей каждого типа добавлено';
                     alert(note);
-                    document.location.href='/src/pages/event_add.php';
+                    document.location.href='/src/pages/field_changing.php';
                 },
                 error: function (response) {
                     $("#loading").hide();
+                    alert("Ошибка сервера " + response.status);
+                }
+            })
+        }
+    });
+    $("#field_form").submit(function (event) {
+        event.preventDefault();
+        if (!$(".input_id").val()) {
+            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
+        } else if (!$(".input_text").val()) {
+            $("#error_text").empty().append("Введите текст").css("display", "block");
+        } else {
+            $("#error_text").empty();
+            $.ajax({
+                url: '/src/handlers/field_changing.php',
+                data: $(this).serialize(),
+                method: 'POST',
+                success: function (response) {
+                    if (response === "Поле обновлено") {
+                        alert("Поле обновлено");
+                        document.location.href='/src/pages/task_add.php';
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function (response) {
+                    alert("Ошибка сервера " + response.status);
+                }
+            })
+        }
+    });
+    $("#note_form").submit(function (event) {
+        event.preventDefault();
+        if (!$(".input_id").val()) {
+            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
+        } else if (!$(".input_text").val()) {
+            $("#error_text").empty().append("Введите текст примечания").css("display", "block");
+        } else {
+            $("#error_text").empty();
+            $.ajax({
+                url: '/src/handlers/note_add.php',
+                data: $(this).serialize(),
+                method: 'POST',
+                success: function (response) {
+                    alert(response);
+                    if (response === 'Ваше примечание добавлено') {
+                        document.location.href='/src/pages/task_add.php';
+                    }
+                },
+                error: function (response) {
                     alert("Ошибка сервера " + response.status);
                 }
             })
@@ -76,7 +125,7 @@ $(document).ready(function(){
                 success: function (response) {
                     alert(response);
                     if (!(response === 'Required field missed phone_number')) {
-                        document.location.href='/src/pages/task_add.php';
+                        // document.location.href='/src/pages/task_add.php';
                     }
                 },
                 error: function (response) {
@@ -86,50 +135,24 @@ $(document).ready(function(){
         }
 
     });
-    $("#note_form").submit(function (event) {
-        event.preventDefault();
-        if (!$(".input_id").val()) {
-            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
-        } else if (!$(".input_text").val()) {
-            $("#error_text").empty().append("Введите текст примечания").css("display", "block");
-        } else {
-            $("#error_text").empty();
-            $.ajax({
-                url: '/src/handlers/note_add.php',
-                data: $(this).serialize(),
-                method: 'POST',
-                success: function (response) {
-                    alert(response);
-                    if (!(response === 'Ошибка. Неверный запрос к базе данных')) {
-                        document.location.href='/src/pages/task_add.php';
-                    }
-                },
-                error: function (response) {
-                    alert("Ошибка сервера " + response.status);
-                }
-            })
-        }
-    });
     $("#task_form").submit(function (event) {
         event.preventDefault();
         if (!$(".input_id").val()) {
             $("#error_text").empty().append("Введите ID сущности").css("display", "block");
         } else {
             $("#error_text").empty();
-            // $.ajax({
-            //     url: '/src/handlers/note_add.php',
-            //     data: $(this).serialize(),
-            //     method: 'POST',
-            //     success: function (response) {
-            //         setTimeout(function(){
-            //             alert(response);
-            //             document.location.href='/src/pages/task_add.html';
-            //         }, 3000);
-            //     },
-            //     error: function (response) {
-            //         alert("Ошибка сервера " + response.status);
-            //     }
-            // })
+            $.ajax({
+                url: '/src/handlers/task_add.php',
+                data: $(this).serialize(),
+                method: 'POST',
+                success: function (response) {
+                    alert(response);
+                    // document.location.href='/src/pages/task_add.html';
+                },
+                error: function (response) {
+                    alert("Ошибка сервера " + response.status);
+                }
+            })
         }
     });
 

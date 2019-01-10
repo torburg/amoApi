@@ -4,7 +4,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/header.php");
 use \Amo\Api\AmoApi;
 #@ToDo stay on these page if response error
 
-if ($_POST) {
+if ($_POST['entity_id'] && $_POST['entity_code'] && $_POST['note_text']) {
 
     $amoApi = new AmoApi();
     $login = 'mfilippov@team.amocrm.com';
@@ -17,6 +17,13 @@ if ($_POST) {
     $entity_code = $_POST['entity_code'];
     $note_text = $_POST['note_text'];
 
+//    we cannot get customers list
+//    {
+//        type: https://www.amocrm.ru/developers/,
+//        title: "Error",
+//        detail: "Functional disabled by administrator",
+//        status: 426
+//    }
     $entities = [
         1 	=> 'contacts',
         2 	=> 'leads',
@@ -35,8 +42,12 @@ if ($_POST) {
     ];
     $params = 'id=' . $entity_id;
 
-    #@ToDo resolve get amount problem (500 for one request)
-    $amoApi->get($entity, $params);
-    $amoApi->add('notes', $note);
-    echo "Ваше примечание добавлено";
+    $response = $amoApi->get($entity, $params);
+    if (array_key_exists("_embedded", $response)) {
+        $amoApi->add('notes', $note);
+        echo "Ваше примечание добавлено";
+    } else {
+        echo "ID сущности и её тип не совпадают";
+    }
+
 }

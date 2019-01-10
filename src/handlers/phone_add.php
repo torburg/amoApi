@@ -19,7 +19,6 @@ if ($_POST) {
             'direction' => 'inbound'
         ]
     ];
-    $amoApi->add('calls', $call);
     $response = $amoApi->add('calls', $call);
     $response = $response["_embedded"];
     if (array_key_exists('errors', $response)) {

@@ -110,10 +110,6 @@ class AmoApi
      * @return bool
      */
     public function authorization(string $login, string $hash) : bool {
-//        try {
-//
-//            $this->_user['USER_LOGIN'] = $login;
-//        }
         $this->_user['USER_LOGIN'] = $login;
         $this->_user['USER_HASH'] = $hash;
         $this->_subdomain = 'testac'; //explode("@", $login)[0];
