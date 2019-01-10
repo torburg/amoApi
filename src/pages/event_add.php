@@ -1,3 +1,6 @@
+<?php if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/cookie.txt')) {
+    header('Location: /src/pages/authorization.php');
+}; ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>

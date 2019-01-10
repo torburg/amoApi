@@ -185,12 +185,11 @@ class AmoApi
         curl_setopt($curl,CURLOPT_USERAGENT,'amoCRM-API-client/1.0');
         curl_setopt($curl,CURLOPT_URL, $link);
 
-        if ($params['method'] === 'POST') {
+        if ($params) {
             curl_setopt($curl,CURLOPT_CUSTOMREQUEST,'POST');
             curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($params));
             curl_setopt($curl,CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        }
-        if ($params['method'] === 'GET') {
+        } else {
             curl_setopt($curl,CURLOPT_CUSTOMREQUEST, 'GET');
         }
 
@@ -200,13 +199,12 @@ class AmoApi
         curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
         curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
         $out = curl_exec($curl);
-        try {
-            if (!$out) {
-                throw new Exception('Неверный запрос к базе данных');
-            }
-        } catch (Exception $E) {
-            die('Ошибка. ' . $E->getMessage());
+
+        if (!$out) {
+            $result = ["NULL"];
+            return $result;
         }
+
         $code = curl_getinfo($curl,CURLINFO_HTTP_CODE);
         curl_close($curl);
         $code = (int)$code;
@@ -225,10 +223,10 @@ class AmoApi
      * @param string $params
      * @return array
      */
-    public function get(string $entity, array $params = []) : array {
+    public function get(string $entity, string $params = "") : array {
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity;
-        if ($params['offset']) {
-            $link .= '/?' . $params['offset'];
+        if ($params) {
+            $link .= "/?" . $params;
         }
         return $this->curl_send($link);
     }

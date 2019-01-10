@@ -1,2 +1,2 @@
 <?php
-header('Location: src/pages/authorization.html');
+header('Location: src/pages/authorization.php');

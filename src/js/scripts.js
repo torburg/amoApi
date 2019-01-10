@@ -22,12 +22,12 @@ $(document).ready(function(){
             $("#error_text").show().empty().append('Введите логин и пароль.');
         } else {
             $.ajax({
-                url: '/src/php/authorization.php',
+                url: '/src/handlers/authorization.php',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
                     if (response === "authorized") {
-                        document.location.href='/src/pages/entities_add.html'
+                        document.location.href='/src/pages/entities_add.php'
                     } else {
                         $("#error_text").empty().append(response).css("display", "block");
                     }
@@ -47,14 +47,14 @@ $(document).ready(function(){
             $("#loading").show();
             $("#submit").hide();
             $.ajax({
-                url: '/src/php/entities_add.php',
+                url: '/src/handlers/entities_add.php',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
                     $("#loading").hide();
                     var note = quantity + ' сущностей каждого типа добавлено';
                     alert(note);
-                    document.location.href='/src/pages/event_add.html';
+                    document.location.href='/src/pages/event_add.php';
                 },
                 error: function (response) {
                     $("#loading").hide();
@@ -70,13 +70,13 @@ $(document).ready(function(){
         } else {
             $("#error_text").empty();
             $.ajax({
-                url: '/src/php/phone_add.php',
+                url: '/src/handlers/phone_add.php',
                 data: $(this).serialize(),
                 method: 'POST',
                 success: function (response) {
                     alert(response);
                     if (!(response === 'Required field missed phone_number')) {
-                        document.location.href='/src/pages/task_add.html';
+                        document.location.href='/src/pages/task_add.php';
                     }
                 },
                 error: function (response) {
@@ -95,13 +95,13 @@ $(document).ready(function(){
         } else {
             $("#error_text").empty();
             $.ajax({
-                url: '/src/php/note_add.php',
+                url: '/src/handlers/note_add.php',
                 data: $(this).serialize(),
                 method: 'POST',
                 success: function (response) {
                     alert(response);
                     if (!(response === 'Ошибка. Неверный запрос к базе данных')) {
-                        document.location.href='/src/pages/task_add.html';
+                        document.location.href='/src/pages/task_add.php';
                     }
                 },
                 error: function (response) {
@@ -117,7 +117,7 @@ $(document).ready(function(){
         } else {
             $("#error_text").empty();
             // $.ajax({
-            //     url: '/src/php/note_add.php',
+            //     url: '/src/handlers/note_add.php',
             //     data: $(this).serialize(),
             //     method: 'POST',
             //     success: function (response) {

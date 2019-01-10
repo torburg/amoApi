@@ -9,7 +9,7 @@ define('ERRORS', [
     502 => 'Bad gateway',
     503 => 'Service unavailable'
 ]);
-
+define('LIMIT', 250);
 function dump($data) {
     echo "<pre>";
     var_dump($data);
