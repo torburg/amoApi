@@ -24,6 +24,6 @@ if ($_POST) {
     if (array_key_exists('errors', $response)) {
         echo $response["errors"][0]['msg'];
     } else {
-        echo "Звонок добавлен ";
+        echo "Звонок добавлен";
     }
 }

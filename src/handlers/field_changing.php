@@ -53,8 +53,8 @@ if ($_POST['entity_id'] && $_POST['entity_code'] && $_POST['field_text']) {
     ];
     $response = $amoApi->update($entity, [$entity_to_update])['_embedded'];
     if (!array_key_exists("errors", $response)) {
-        echo "Поле обновлено"; die;
+        echo "Поле обновлено";
     } else {
-        echo "Неверный ID и/или сущность"; die;
+        echo $response["errors"][0]['msg'];
     }
 }

@@ -147,7 +147,10 @@ $(document).ready(function(){
                 method: 'POST',
                 success: function (response) {
                     alert(response);
-                    // document.location.href='/src/pages/task_add.html';
+                    if (response === "Задача добавлена") {
+                        console.log('adwdawdwd')
+                        document.location.href='/src/pages/task_close.php';
+                    }
                 },
                 error: function (response) {
                     alert("Ошибка сервера " + response.status);
@@ -155,5 +158,24 @@ $(document).ready(function(){
             })
         }
     });
-
+    $("#task_close_form").submit(function (event) {
+        event.preventDefault();
+        console.log('adwdwda');
+        if (!$(".input").val()) {
+            $("#error_text").empty().append("Введите ID задачи").css("display", "block");
+        } else {
+            $("#error_text").empty();
+            $.ajax({
+                url: '/src/handlers/task_close.php',
+                data: $(this).serialize(),
+                method: 'POST',
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert("Ошибка сервера " + response.status);
+                }
+            })
+        }
+    });
 });

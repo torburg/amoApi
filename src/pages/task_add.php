@@ -16,7 +16,7 @@
     <span id="error_text"></span>
     <form id="task_form">
         <div class="input entity_id">
-            <input type="text" name="entity_id" class="input_id" placeholder="Введите ID сущности">
+            <input type="text" name="entity_id" class="input_id" placeholder="Введите ID элемента">
         </div>
         <div class="input entity_code">
             <p class="input_note">Тип сущности:</p>

@@ -9,14 +9,12 @@ if ($_POST['entity_id'] &&
     $_POST['responsible_user_id'] &&
     $_POST['task_text']) {
 
-    echo $_POST['complete_till_at'];
-
     $login = 'mfilippov@team.amocrm.com';
     $hash = '2e39d1a98868c0f5dba770757150480a1c936685';
     $amoApi = new AmoApi();
-    dump($amoApi->authorization($login, $hash));
+    $amoApi->authorization($login, $hash);
 
-    $entity_id = $_POST['entity_id'];
+    $element_id = $_POST['entity_id'];
     $entity_code = $_POST['entity_code'];
     $complete_till_at = $_POST['complete_till_at'];
     $responsible_user_id = $_POST['responsible_user_id'];
@@ -31,6 +29,16 @@ if ($_POST['entity_id'] &&
     ];
     $entity = $entities[$entity_code];
 
-    $params = 'id=' . $entity_id;
-    $response = $amoApi->get($entity, $params);
+    $task = [];
+    $task['element_id'] = $element_id;
+    $task['element_type'] = $entity_code;
+    $task['complete_till_at'] =$complete_till_at;
+    $task['responsible_user_id'] = $responsible_user_id;
+    $task['text'] = $task_text;
+    $response = $amoApi->add("tasks", [$task]);
+    if (array_key_exists('errors', $response)) {
+        echo $response["errors"][0]['msg'];
+    } else {
+        echo "Задача добавлена";
+    }
 }
