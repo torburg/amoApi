@@ -29,6 +29,17 @@ if ($_POST['entity_id'] &&
     ];
     $entity = $entities[$entity_code];
 
+    //get all users
+    $params = "with=users";
+    $response = $amoApi->get('account', $params)["_embedded"]["users"];
+    $users_ids = [];
+    foreach ($response as $item){
+        $users_ids[] = $item['id'];
+    }
+    if(!in_array($responsible_user_id, $users_ids)) {
+        echo "Такого пользователя не существует"; die;
+    }
+
     $task = [];
     $task['element_id'] = $element_id;
     $task['element_type'] = $entity_code;

@@ -29,10 +29,10 @@
         </div>
         <div class="input">
             <p>Дата завершения задачи:</p>
-            <input type="date" name="complete_till_at" placeholder="Дата завершения задачи  ">
+            <input type="date" class="date" name="complete_till_at" placeholder="Дата завершения задачи  ">
         </div>
         <div class="input">
-            <input type="text" class="input" name="responsible_user_id" placeholder="Введите ID ответственного">
+            <input type="text" class="input responsible_user_id" name="responsible_user_id" placeholder="Введите ID ответственного">
         </div>
         <div class="input note_text">
             <textarea name="task_text" class="input_text" placeholder="Текст задачи" autocomplete="off"></textarea>

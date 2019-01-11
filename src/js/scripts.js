@@ -141,8 +141,16 @@ $(document).ready(function(){
     });
     $("#task_form").submit(function (event) {
         event.preventDefault();
+        var current_date = new Date();
+        var task_date = new Date(Date.parse($(".date").val()));
         if (!$(".input_id").val()) {
             $("#error_text").text("Введите ID сущности").css("display", "block");
+        } else if (!$(".date").val() || current_date > task_date) {
+            $("#error_text").text("Введите корректную дату").css("display", "block");
+        } else if (!$(".responsible_user_id").val()) {
+            $("#error_text").text("Введите ответственного пользователя").css("display", "block");
+        } else if (!$(".input_text").val()) {
+            $("#error_text").text("Введите текст задачи").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({
@@ -152,7 +160,6 @@ $(document).ready(function(){
                 success: function (response) {
                     alert(response);
                     if (response === "Задача добавлена") {
-                        console.log('adwdawdwd')
                         document.location.href='/src/pages/task_close.php';
                     }
                 },
@@ -164,7 +171,6 @@ $(document).ready(function(){
     });
     $("#task_close_form").submit(function (event) {
         event.preventDefault();
-        console.log('adwdwda');
         if (!$(".input").val()) {
             $("#error_text").text("Введите ID задачи").css("display", "block");
         } else {

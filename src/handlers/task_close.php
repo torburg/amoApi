@@ -9,9 +9,17 @@ if ($_POST['task_id']) {
     $amoApi = new AmoApi();
     $amoApi->authorization($login, $hash);
 
+    $task_id = $_POST['task_id'];
+    $response = $amoApi->get('tasks');
+    $response = $response["_embedded"]['items'];
+    $tasks = $amoApi->response_processing($response);
+    if (!in_array($task_id, $tasks)) {
+        echo "Задачи с таким ID нет"; die;
+    }
+
     $params = [
         [
-            'id' => $_POST['task_id'],
+            'id' => $task_id,
             'text' => 'Finished',
             'updated_at' => time(),
             'is_completed' => TRUE,
