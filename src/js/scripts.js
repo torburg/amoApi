@@ -18,7 +18,7 @@ $(document).ready(function(){
         var login = $("#login").val();
         var password = $("#password").val();
         if (!login || !password) {
-            $("#error_text").show().empty().append('Введите логин и пароль.');
+            $("#error_text").show().text('Введите логин и пароль.');
         } else {
             $.ajax({
                 url: '/src/handlers/authorization.php',
@@ -41,10 +41,11 @@ $(document).ready(function(){
         event.preventDefault();
         var quantity = parseInt($("input").val());
         if (isNaN(quantity) || quantity <= 0 || quantity > 10000) {
-            $("#error_text").empty().append("Введите верное количество").css("display", "block");
+            $("#error_text").text("Введите верное количество").css("display", "block");
         } else {
-            $("#loading").show();
+            $("#error_text").hide();
             $("#submit").hide();
+            $("#loading").show();
             $.ajax({
                 url: '/src/handlers/entities_add.php',
                 method: 'POST',
@@ -64,10 +65,13 @@ $(document).ready(function(){
     });
     $("#field_form").submit(function (event) {
         event.preventDefault();
-        if (!$(".input_id").val()) {
-            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
+        var id = parseInt($(".input_id").val());
+        if (isNaN(id)) {
+            $("#error_text").text("Введите цифровой ID элемента").css("display", "block");
+        } else if (id <= 0) {
+            $("#error_text").text("Введите положительный ID элемента").css("display", "block");
         } else if (!$(".input_text").val()) {
-            $("#error_text").empty().append("Введите текст").css("display", "block");
+            $("#error_text").text("Введите значение поля").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({
@@ -75,9 +79,9 @@ $(document).ready(function(){
                 data: $(this).serialize(),
                 method: 'POST',
                 success: function (response) {
-                    if (response === "Поле обновлено") {
-                        alert("Поле обновлено");
-                        document.location.href='/src/pages/task_add.php';
+                    if (response === "Значение поля обновлено") {
+                        alert(response);
+                        document.location.href='/src/pages/event_add.php';
                     } else {
                         alert(response);
                     }
@@ -91,9 +95,9 @@ $(document).ready(function(){
     $("#note_form").submit(function (event) {
         event.preventDefault();
         if (!$(".input_id").val()) {
-            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
+            $("#error_text").text("Введите ID сущности").css("display", "block");
         } else if (!$(".input_text").val()) {
-            $("#error_text").empty().append("Введите текст примечания").css("display", "block");
+            $("#error_text").text("Введите текст примечания").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({
@@ -115,7 +119,7 @@ $(document).ready(function(){
     $("#call_form").submit(function(event) {
         event.preventDefault(event);
         if (!$(".input_phone").val()) {
-            $("#error_text").empty().append("Введите номер телефона").css("display", "block");
+            $("#error_text").text("Введите номер телефона").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({
@@ -125,7 +129,7 @@ $(document).ready(function(){
                 success: function (response) {
                     alert(response);
                     if (!(response === 'Required field missed phone_number')) {
-                        // document.location.href='/src/pages/task_add.php';
+                        document.location.href='/src/pages/task_add.php';
                     }
                 },
                 error: function (response) {
@@ -138,7 +142,7 @@ $(document).ready(function(){
     $("#task_form").submit(function (event) {
         event.preventDefault();
         if (!$(".input_id").val()) {
-            $("#error_text").empty().append("Введите ID сущности").css("display", "block");
+            $("#error_text").text("Введите ID сущности").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({
@@ -162,7 +166,7 @@ $(document).ready(function(){
         event.preventDefault();
         console.log('adwdwda');
         if (!$(".input").val()) {
-            $("#error_text").empty().append("Введите ID задачи").css("display", "block");
+            $("#error_text").text("Введите ID задачи").css("display", "block");
         } else {
             $("#error_text").empty();
             $.ajax({

@@ -35,7 +35,7 @@
                 </select>
             </div>
             <div class="input note_text">
-            <textarea name="note_text" class="input_text" placeholder="Текст заметки" autocomplete="off"></textarea>
+            <textarea name="note_text" class="input_text" placeholder="Текст примечания" autocomplete="off"></textarea>
         </div>
         </div>
         <input type="submit" class="submit" value="Добавить примечание">

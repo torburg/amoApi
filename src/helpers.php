@@ -9,7 +9,22 @@ define('ERRORS', [
     502 => 'Bad gateway',
     503 => 'Service unavailable'
 ]);
+
+define('COLORS', [
+    "чёрный",
+    "белый",
+    "красный",
+    "оранжевый",
+    "голубой",
+    "фиолетовый",
+    "прозрачный",
+    "жёлтый",
+    "синий",
+    "зелёный"
+]);
+
 define('LIMIT', 250);
+
 function dump($data) {
     echo "<pre>";
     var_dump($data);

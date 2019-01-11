@@ -16,7 +16,7 @@
         <span id="error_text"></span>
         <form id="entities_form">
             <div class="container_input">
-                <input type="text" name="count" class="input" placeholder="Введите количество создаваемых сущностей (от 0 до 10000)"/>
+                <input type="text" name="count" class="input" placeholder="Введите количество создаваемых сущностей (от 1 до 10000)"/>
             </div>
             <img id="loading" src="/src/images/loading.gif" />
             <input type="submit" class="submit" id="submit" value="Создать">

@@ -16,7 +16,7 @@
     <form id="field_form">
         <div class="field_block">
             <div class="input entity_id">
-                <input type="text" name="entity_id" class="input_id" placeholder="Введите ID элемента">
+                <input type="text" name="element_id" class="input_id" placeholder="Введите ID элемента">
             </div>
             <div class="input entity_code">
                 <p class="input_note">Тип сущности:</p>

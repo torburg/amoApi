@@ -244,10 +244,28 @@ class AmoApi
      * @param array $data
      * @return array
      */
-    public function update(string $entity_name, array $data) {
+    public function update(string $entity_name, array $data) : array {
         $data_to_send['update'] = $data;
         $link = 'https://' . $this->_subdomain . '.amocrm.ru/api/v2/' . $entity_name;
         return $this->curl_send($link, $data_to_send);
     }
 
+    /**
+     * @param string $entity_name
+     */
+    public function delete(string $entity_name)  {
+
+    }
+    /**
+     * @param array $errors
+     * @return string
+     */
+#ToDo complete by all of errors fields (update, add...)
+    public function errors_handler(array $errors) : string {
+        if (array_key_exists('update', $errors)) {
+            $response = 'Ошибка обновления: ';
+            $error_result = implode('', $errors['update']);
+            return $response . $error_result;
+        }
+    }
 }

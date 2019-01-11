@@ -8,7 +8,7 @@ if ($_POST['entity_id'] && $_POST['entity_code'] && $_POST['note_text']) {
 
     $amoApi = new AmoApi();
     $login = 'mfilippov@team.amocrm.com';
-    $hash = '4f2e1172393444687df0487b3d5c10286f8e00ee';
+    $hash = '2e39d1a98868c0f5dba770757150480a1c936685';
 
     $amoApi = new AmoApi();
     $amoApi->authorization($login, $hash);
