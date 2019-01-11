@@ -15,14 +15,7 @@ if ($_POST['element_id'] > 0 && $_POST['entity_code'] && $_POST['field_text']) {
     $entity_code = $_POST['entity_code'];
     $field_text = $_POST['field_text'];
 
-    $entities = [
-        1 	=> 'contacts',
-        2 	=> 'leads',
-        3 	=> 'companies',
-        4 	=> 'tasks',
-        12 	=> 'customers',
-    ];
-    $entity = $entities[$entity_code];
+    $entity = ENTITIES[$entity_code];
 
     //get all custom fields
     $params = "with=custom_fields";
@@ -40,20 +33,23 @@ if ($_POST['element_id'] > 0 && $_POST['entity_code'] && $_POST['field_text']) {
     if ($field_id < 0) {
         echo "У данной сущности нет текстового поля"; die;
     }
-    $entity_to_update = [];
-    $entity_to_update['id'] = $element_id;
-    $entity_to_update['updated_at'] = time();
-    $entity_to_update['custom_fields'] = [
+    $entity_to_update = [
         [
-            'id' => $field_id,
-            'values' => [
+            'id' => $element_id,
+            'updated_at' => time(),
+            'custom_fields' => [
                 [
-                    'value' => $field_text
+                    'id' => $field_id,
+                    'values' => [
+                        [
+                            'value' => $field_text
+                        ]
+                    ]
                 ]
             ]
         ]
     ];
-    $response = $amoApi->update($entity, [$entity_to_update])['_embedded'];
+    $response = $amoApi->update($entity, $entity_to_update)['_embedded'];
     if (!array_key_exists("errors", $response)) {
         echo "Значение поля обновлено";
     } else {

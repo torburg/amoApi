@@ -8,28 +8,7 @@ $login = 'mfilippov@team.amocrm.com';
 $hash = '2e39d1a98868c0f5dba770757150480a1c936685';
 $amoApi = new AmoApi();
 $amoApi->authorization($login, $hash);
-
-$task_id = 1;
-//$task_id = $_POST['task_id'];
-$response = $amoApi->get('tasks');
-$response = $response["_embedded"]['items'];
-$tasks = $amoApi->response_processing($response);
-dump($tasks);
-if (!in_array($task_id, $tasks)) {
-    echo "Задачи с таким ID нет"; die;
-}
-
-$params = [
-    [
-        'id' => $task_id,
-        'text' => 'Finished',
-        'updated_at' => time(),
-        'is_completed' => TRUE,
-    ]
-];
-$response = $amoApi->update("tasks", $params);
-if (!array_key_exists("errors", $response)) {
-    echo "Задача закрыта";
-} else {
-    echo "Задача не закрыта";
-}
+$fields = $amoApi->collect('fields', 1);
+$response = $amoApi->add('fields', $fields);
+$field_id = $amoApi->response_processing($response)[0];
+dump($field_id);

@@ -9,7 +9,13 @@ define('ERRORS', [
     502 => 'Bad gateway',
     503 => 'Service unavailable'
 ]);
-
+define('ENTITIES', [
+    1 	=> 'contacts',
+    2 	=> 'leads',
+    3 	=> 'companies',
+    4 	=> 'tasks',
+    12 	=> 'customers',
+]);
 define('COLORS', [
     "чёрный",
     "белый",

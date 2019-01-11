@@ -23,8 +23,8 @@ if ($_POST['count'] >= 0 && $_POST['count'] <= 10000) {
 
 //creating custom field
     $fields = $amoApi->collect('fields', 1);
-    $request = $amoApi->add('fields', $fields);
-    $field_id = $request['_embedded']['items'][0]['id'];
+    $response = $amoApi->add('fields', $fields);
+    $field_id = $amoApi->response_processing($response)[0];
 
 //creating entities
     while ($i < $to_add) {
@@ -38,7 +38,6 @@ if ($_POST['count'] >= 0 && $_POST['count'] <= 10000) {
 
         $contacts = $amoApi->collect('contact', $adding_quantity, $entities);
         $response = $amoApi->add('contacts', $contacts);
-        $response = $response["_embedded"]['items'];
         $entities['contacts'] = $amoApi->response_processing($response);
 
         //updating contacts to add values of custom field
@@ -63,7 +62,6 @@ if ($_POST['count'] >= 0 && $_POST['count'] <= 10000) {
 
         $companies = $amoApi->collect('company', $adding_quantity, $entities);
         $response = $amoApi->add('companies', $companies);
-        $response = $response["_embedded"]['items'];
         $entities['companies'] = $amoApi->response_processing($response);
 
         //customers and leads don't connect -> response_processing doesn't required

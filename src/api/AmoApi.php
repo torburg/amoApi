@@ -233,6 +233,7 @@ class AmoApi
      */
     public function response_processing(array $response) : array {
         $result = [];
+        $response = $response["_embedded"]['items'];
         foreach ($response as $item) {
             $result[] = $item['id'];
         }

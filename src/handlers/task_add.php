@@ -20,14 +20,8 @@ if ($_POST['entity_id'] &&
     $responsible_user_id = $_POST['responsible_user_id'];
     $task_text = $_POST['task_text'];
 
-    $entities = [
-        1 	=> 'contacts',
-        2 	=> 'leads',
-        3 	=> 'companies',
-        4 	=> 'tasks',
-        12 	=> 'customers',
-    ];
-    $entity = $entities[$entity_code];
+    
+    $entity = ENTITIES[$entity_code];
 
     //get all users
     $params = "with=users";
@@ -40,13 +34,17 @@ if ($_POST['entity_id'] &&
         echo "Такого пользователя не существует"; die;
     }
 
-    $task = [];
-    $task['element_id'] = $element_id;
-    $task['element_type'] = $entity_code;
-    $task['complete_till_at'] =$complete_till_at;
-    $task['responsible_user_id'] = $responsible_user_id;
-    $task['text'] = $task_text;
-    $response = $amoApi->add("tasks", [$task]);
+    $task = [
+        [
+            'element_id' => $element_id,
+            'element_type' => $entity_code,
+            'complete_till_at' => $complete_till_at,
+            'responsible_user_id' => $responsible_user_id,
+            'text' => $task_text
+        ]
+    ];
+
+    $response = $amoApi->add("tasks", $task);
     if (array_key_exists('errors', $response)) {
         echo $response["errors"][0]['msg'];
     } else {

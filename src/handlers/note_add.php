@@ -24,14 +24,8 @@ if ($_POST['entity_id'] && $_POST['entity_code'] && $_POST['note_text']) {
 //        detail: "Functional disabled by administrator",
 //        status: 426
 //    }
-    $entities = [
-        1 	=> 'contacts',
-        2 	=> 'leads',
-        3 	=> 'companies',
-        4 	=> 'tasks',
-        12 	=> 'customers',
-    ];
-    $entity = $entities[$entity_code];
+
+    $entity = ENTITIES[$entity_code];
 
     $note = [
         [
@@ -40,8 +34,8 @@ if ($_POST['entity_id'] && $_POST['entity_code'] && $_POST['note_text']) {
             'text' => $note_text
         ]
     ];
-    $params = 'id=' . $entity_id;
 
+    $params = 'id=' . $entity_id;
     $response = $amoApi->get($entity, $params);
     if (array_key_exists("_embedded", $response)) {
         $amoApi->add('notes', $note);
